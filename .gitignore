@@ -1,0 +1,31 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore build directories
+dist/
+build/
+
+# Ignore environment variable files
+.env
+
+# Ignore OS-specific files
+.DS_Store
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+# Ignore compiled files
+*.out
+*.o
+HeroAndDragons
+CMakeFiles/
+Makefile
+CmakeCache.txt
+cmake_install.cmake
+
+# Ignore dependency directories
+vendor/
