@@ -1,16 +1,89 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="./favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css">
-    <title>Heroes and Dragon</title>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Диалоговое Окно</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        .dialogue-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7); /* Полупрозрачный фон */
+            display: none; /* Скрыто по умолчанию */
+            justify-content: center; /* Центрируем по горизонтали */
+            align-items: center; /* Центрируем по вертикали */
+            z-index: 1000; /* Поверх остальных элементов */
+        }
 
+        .dialogue-container {
+            background: rgba(255, 255, 255, 0.9); /* Белый фон с прозрачностью */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .dialogue-text {
+            color: #45a049;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
 <body>
-    <div id="app">
-        <div id="game-container"></div>
+    <div class="dialogue-overlay" id="dialogueOverlay">
+        <div id="dialogue-container" style="display: none;">
+    <p id="dialogue-text"></p>
+    <input type="text" id="input-field" style="display: none;" />
+    <button id="submit-button" style="display: none;">Отправить</button>
+</div>
     </div>
+
+    <script>
+        document.getElementById('submitButton').addEventListener('click', () => {
+            const userInput = document.getElementById('userInput').value;
+            console.log(userInput);
+            // Здесь вы можете добавить логику проверки ответа
+            document.getElementById('userInput').value = ''; // Очищаем поле после ввода
+        });
+
+        // Для показа диалогового окна
+        function showDialogue() {
+            document.getElementById('dialogueOverlay').style.display = 'flex';
+        }
+
+        // Для скрытия диалогового окна
+        function hideDialogue() {
+            document.getElementById('dialogueOverlay').style.display = 'none';
+        }
+    </script>
 </body>
 </html>

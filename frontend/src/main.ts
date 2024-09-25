@@ -19,12 +19,15 @@ const config: Types.Core.GameConfig = {
 	physics: {
 		default: 'arcade',
 		arcade: {
-			gravity: {x: 0, y: 500 },
+			gravity: { x: 0, y: 500 },
 			debug: false,
 		},
 	},
 	scene: [Boot, Preloader, MainMenu, MainGame, GameOver],
-	
 }
 
-export default new Game(config);
+document.addEventListener('DOMContentLoaded', () => {
+	new Game(config);
+});
+
+export default config;

@@ -7,4 +7,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 
-add_executable(HeroAndDragons src/main.cpp)
+add_executable(HeroAndDragons src/main.cpp
+                              src/json.h
+                              src/cpphttplib.h)

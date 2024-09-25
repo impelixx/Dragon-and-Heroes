@@ -4,7 +4,10 @@
 #include <chrono>
 #include <vector>
 #include <algorithm>
+#include "json.h"
+#include "cpphttplib.h"
 
+using json = nlohmann::json;
 
 const std::string RED_COLOR = "\033[31m";
 const std::string GREEN_COLOR = "\033[32m";
@@ -40,9 +43,9 @@ public:
   std::string getName(){
     return name_;
   }
-  virtual void checkAnswer(Attacker* player) = 0;
+  virtual json checkAnswer(Attacker* player, int userAnswer) = 0;
   virtual void SetAnswer(int answer) = 0;
-  virtual void AskQuestion() = 0;
+  virtual json AskQuestion(int maxNum) = 0;
 
 protected:
   std::string name_;
@@ -53,79 +56,100 @@ protected:
 class RedDragon : public Enemy {
 public:
   RedDragon() : Enemy(100, 10, "Красный") {}
-  void checkAnswer(Attacker* player) override {
-    std::string answer;
-    std::cin >> answer;
-    if (std::stoi(answer) == answer_) {
-      std::cout << name_ << " дракон не смог увернуться, ты нанес ему удар." << std::endl;
-      player->attack(this);
-      std::cout << name_ << " дракон потерял здоровье, у него осталось " << health_ << " здоровья" << std::endl;
-    } else {
-      std::cout << "Неправильно " << name_ << " дракон нанес тебе удар" << std::endl;
-      this->attack(player);
-      std::cout << "Теперь у тебя осталось " << player->getHealth() << " здоровья" << std::endl;
+    json checkAnswer(Attacker* player, int userAnswer) override {
+        json response;
+        if (userAnswer == answer_) {
+            player->attack(this);
+            response["result"] = "correct";
+            response["message"] = name_ + " дракон не смог увернуться, ты нанес ему удар.";
+            response["enemy_health"] = health_;
+        } else {
+            this->attack(player);
+            response["result"] = "wrong";
+            response["message"] = "Неправильно " + name_ + " дракон нанес тебе удар";
+            response["player_health"] = player->getHealth();
+        }
+        return response;
     }
-  }
+
+    json AskQuestion(int maxNum) override {
+        int num1 = rand() % maxNum;
+        int num2 = rand() % maxNum;
+        SetAnswer(num1 + num2);
+        json questionJson;
+        std::cout << num1 << " + " << num2 << " = " << num1 + num2 << std::endl;
+        questionJson["question"] = name_ + " дракон спрашивает сколько будет " + std::to_string(num1) + " + " + std::to_string(num2) + " = ";
+        questionJson["dragon"] = "Red";
+        return questionJson;
+    }
   void SetAnswer(int answer) override {
     answer_ = answer;
-  }
-  void AskQuestion() override {
-    int num1 = rand() % 10;
-    int num2 = rand() % 10;
-    SetAnswer(num1 + num2);
-    std::cout << RED_COLOR << name_ << " дракон спрашивает сколько будет "<< num1 << " + " << num2 << " = ";
   }
 };
 
 class GreenDragon : public Enemy {
 public:
   GreenDragon() : Enemy(100, 10, "Зеленый") {}
-  void checkAnswer(Attacker* player) override {
-    std::string answer;
-    std::cin >> answer;
-    if (std::stoi(answer) == answer_) {
-      std::cout << name_ << " дракон потерял здоровье, у него осталось " << health_ << " здоровья" << std::endl;
-      player->attack(this);
-      std::cout << name_ << " дракон потерял здоровье, у него осталось " << health_ << " здоровья" << std::endl;
-    } else {
-      std::cout << "Неправильно " << name_ << " дракон нанес тебе удар" << std::endl;
-      this->attack(player);
-      std::cout << "Теперь у тебя осталось " << player->getHealth() << " здоровья" << std::endl;
+    json checkAnswer(Attacker* player, int userAnswer) override {
+        json response;
+        if (userAnswer == answer_) {
+            player->attack(this);
+            response["result"] = "correct";
+            response["message"] = name_ + " дракон не смог увернуться, ты нанес ему удар.";
+            response["enemy_health"] = health_;
+        } else {
+            this->attack(player);
+            response["result"] = "wrong";
+            response["message"] = "Неправильно " + name_ + " дракон нанес тебе удар";
+            response["player_health"] = player->getHealth();
+        }
+        return response;
     }
-  }
+
+    json AskQuestion(int maxNum) override {
+        int num1 = rand() % maxNum;
+        int num2 = rand() % maxNum;
+        SetAnswer(num1 - num2);
+        json questionJson;
+        std::cout << num1 << " - " << num2 << " = " << num1 - num2 << std::endl;
+        questionJson["question"] = name_ + " дракон спрашивает сколько будет " + std::to_string(num1) + " - " + std::to_string(num2) + " = ";
+        questionJson["dragon"] = "Green";
+        return questionJson;
+    }
   void SetAnswer(int answer) override {
     answer_ = answer;
   }
-  void AskQuestion() override {
-    int num1 = rand() % 10;
-    int num2 = rand() % 10;
-    SetAnswer(num1 * num2);
-    std::cout << GREEN_COLOR << name_ << " дракон спрашивает сколько будет " << num1 << " * " << num2 << " = ";
-  }
 };
 
-class  BlackDragon : public Enemy {
+class BlackDragon : public Enemy {
 public:
-BlackDragon() : Enemy(100, 10, "Черный") {}
-  void checkAnswer(Attacker* player) override {
-    std::string answer;
-    std::cin >> answer;
-    if (std::stoi(answer) == answer_) {
-      std::cout << name_ << " дракон не смог увернуться, ты нанес ему удар." << std::endl;
-      player->attack(this);
-      std::cout << name_ << " дракон потерял здоровье, у него осталось " << health_ << " здоровья" << std::endl;
-    } else {
-      std::cout << "Неправильно " << name_ << " дракон нанес тебе удар" << std::endl;
-      this->attack(player);
-      std::cout << "Теперь у тебя осталось " << player->getHealth() << " здоровья" << std::endl;
+  BlackDragon() : Enemy(100, 10, "Черный") {}
+    json checkAnswer(Attacker* player, int userAnswer) override {
+        json response;
+        if (userAnswer == answer_) {
+            player->attack(this);
+            response["result"] = "correct";
+            response["message"] = name_ + " дракон не смог увернуться, ты нанес ему удар.";
+            response["enemy_health"] = health_;
+        } else {
+            this->attack(player);
+            response["result"] = "wrong";
+            response["message"] = "Неправильно " + name_ + " дракон нанес тебе удар";
+            response["player_health"] = player->getHealth();
+        }
+        return response;
     }
-  }
-    void AskQuestion() override {
-    int num1 = rand() % 10;
-    int num2 = rand() % 10;
-    SetAnswer(num1 - num2);
-    std::cout << BLACK_COLOR << name_ << " дракон спрашивает сколько будет " << num1 << " - " << num2 << " = ";
-  }
+
+    json AskQuestion(int maxNum) override {
+        int num1 = rand() % maxNum;
+        int num2 = rand() % maxNum;
+        SetAnswer(num1 * num2);
+        std::cout << num1 << " * " << num2 << " = " << num1 * num2 << std::endl;
+        json questionJson;
+        questionJson["question"] = name_ + " дракон спрашивает сколько будет " + std::to_string(num1) + " * " + std::to_string(num2) + " = ";
+        questionJson["dragon"] = "Black";
+        return questionJson;
+    }
   void SetAnswer(int answer) override {
     answer_ = answer;
   }
@@ -141,28 +165,94 @@ public:
   }
 };
 
-int main() {
-  std::cout << RESET_COLOR << "Жила-была в далекой стране старая легенда. Говорили, что в сердце горы драконы хранят древнюю тайну, дарующую несметную силу. "
-            << "Но чтобы добраться до нее, отважный воин должен победить не одного, а трех могущественных драконов: "
-            << "Красного — воплощение пламени, Зеленого — стража лесов и Черного — хранителя теней. "
-            << "Многие пытались, но все пали от их когтей и огненного дыхания.\n"
-            << "Теперь, это твой путь, храбрец. Сможешь ли ты одолеть их и найти заветную силу?\n"
-            << "Отвечай правильно на вопросы, иначе дракон нанесет тебе удар. Удачи!\n"<< std::endl;
-  Player* player = new Player();
-  while (player->isAlive()) {
-    std::vector<Enemy*> enemies = {new RedDragon(), new GreenDragon(), new BlackDragon(), new RedDragon(), new GreenDragon(), new BlackDragon()};
-    // std::ranom_shuffle(enemies.begin(), enemies.end(), get);
-    for (auto enemy : enemies) {
-      std::cout << RESET_COLOR << enemy->getName() << " дракон напал на тебя" << std::endl;
-      while (enemy->isAlive() && player->isAlive()) {
-        enemy->AskQuestion();
-        enemy->checkAnswer(player);
-        if (!player->isAlive()) {
-          std::cerr << "You are dead" << std::endl;
-        }
-      }
-    }
-    std::cout << RESET_COLOR << "Ты убил всех драконов, ты победил" << std::endl;
-    return 0;
+Enemy *k;
+
+void getNewDragon() {
+  std::cout << "New Dragon" << std::endl;
+  int num = rand() % 3;
+  if (num == 0) {
+    k = new RedDragon();
+  } else if (num == 1) {
+    k = new GreenDragon();
+  } else {
+    k = new BlackDragon();
   }
+}
+Player* player = nullptr;
+
+int main() {
+  httplib::Server svr;
+  //std::vector<Enemy*> enemies = {new RedDragon(), new GreenDragon(), new BlackDragon()};
+  //std::shuffle(enemies.begin(), enemies.end(), rng);
+
+  getNewDragon();
+
+  svr.set_post_routing_handler([](const auto& req, auto& res) {
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_header("Access-Control-Allow-Headers", "*");
+  });
+
+  svr.Get("/init", [](const httplib::Request &req, httplib::Response &res) {
+    player = new Player(); 
+    std::cout << "player created"; 
+  });
+
+  svr.Get("/get_task", [](const httplib::Request& req, httplib::Response& res) {
+      if (req.has_param("difficulty")) {
+          int difficulty = std::stoi(req.get_param_value("difficulty"));
+          difficulty = std::max(1, difficulty);
+          json questionJson = k->AskQuestion(difficulty * 10);
+          res.set_content(questionJson.dump(), "application/json");
+      } else {
+          res.status = 400;
+          res.set_content("{\"error\": \"Missing difficulty parameter\"}", "application/json");
+      }
+  });
+
+  svr.Get("/check_answer", [](const httplib::Request& req, httplib::Response& res) {
+  if (req.has_param("answer")) {
+      std::string answerStr = req.get_param_value("answer");
+      int answer = std::stoi(answerStr);
+      std::cout << "Received answer: " << answer << std::endl;
+      std::cout << k->getHealth() << std::endl;
+      json answerResponse = k->checkAnswer(player, answer);
+      res.set_content(answerResponse.dump(), "application/json");
+  } else {
+      res.status = 400;
+      res.set_content("{\"error\": \"Missing answer parameter\"}", "application/json");
+  }
+  });
+
+  svr.Get("/get_health", [](const httplib::Request&, httplib::Response& res) {
+    json healthJson;
+    healthJson["health"] = player->getHealth();
+    
+    res.set_content(healthJson.dump(), "application/json");
+  });
+  svr.Get("/get_stat", [](const httplib::Request&, httplib::Response& res) {
+    json r;
+    r["damage"] = 50;
+    r["health"] = player->getHealth();
+    res.set_content(r.dump(), "application/json");
+  });
+
+  svr.Get("/get_name", [](const httplib::Request&, httplib::Response& res) {
+    json nameJson;
+    nameJson["name"] = k->getName();
+    res.set_content(nameJson.dump(), "application/json");
+  });
+
+  svr.Get("/kill_dragon", [](const httplib::Request&, httplib::Response& res) {
+    if (k->getHealth() <= 0) {
+      std::cout << "check" << std::endl;
+      getNewDragon();
+      res.set_content("{\"result\": \"success\"}", "application/json");
+    } else {
+      res.set_content("{\"result\": \"fail\"}", "application/json");
+    }
+  });
+
+  svr.listen("localhost", 3000);
+
+  return 0;
 }

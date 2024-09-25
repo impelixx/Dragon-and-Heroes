@@ -14,7 +14,7 @@ export class MainMenu extends Scene {
 	create() {
 		this.background = this.add.image(512, 384, 'background').setOrigin(0.5)
 
-		this.logo = this.add.image(512, 200, 'logo').setOrigin(0.5).setAlpha(0)
+		this.logo = this.add.image(512, 200, 'logo').setPosition(512, 200).setAlpha(0).setScale(0.4, 0.4)
 		this.tweens.add({
 			targets: this.logo,
 			alpha: 1,
@@ -68,7 +68,6 @@ export class MainMenu extends Scene {
 			this.scene.start('Game')
 		})
 
-		// Добавление кнопки выбора персонажа
 		this.characterButton = this.add
 			.text(512, 600, 'Choose Character', {
 				fontFamily: 'Arial Black',
