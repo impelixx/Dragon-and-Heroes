@@ -24,7 +24,7 @@ export class MainMenu extends Scene {
 		})
 
 		this.title = this.add
-			.text(512, 460, 'Main Menu', {
+			.text(512, 460, 'Главное меню', {
 				fontFamily: 'Arial Black',
 				fontSize: 38,
 				color: '#ffffff',
@@ -44,7 +44,7 @@ export class MainMenu extends Scene {
 		})
 
 		this.startButton = this.add
-			.text(512, 550, 'Start Game', {
+			.text(512, 550, 'Начать игру', {
 				fontFamily: 'Arial Black',
 				fontSize: 24,
 				color: '#ffcc00',
@@ -69,7 +69,7 @@ export class MainMenu extends Scene {
 		})
 
 		this.characterButton = this.add
-			.text(512, 600, 'Choose Character', {
+			.text(512, 600, 'Выбрать персонажа', {
 				fontFamily: 'Arial Black',
 				fontSize: 24,
 				color: '#ffcc00',
@@ -90,10 +90,11 @@ export class MainMenu extends Scene {
 
 		this.characterButton.on('pointerdown', () => {
 			this.characterButton.setStyle({ fill: '#cccc00' })
-			this.scene.start('CharacterSelect') // Предполагается, что сцена выбора персонажа называется 'CharacterSelect'
+			alert("Not implemented yet")
 		})
 
-		// Добавление анимации для кнопок
+
+
 		this.tweens.add({
 			targets: this.startButton,
 			y: 540,

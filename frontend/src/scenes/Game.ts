@@ -55,7 +55,7 @@ export class Game extends Scene {
 	}
 
 	handleSubmit() {
-		const userInput = this.inputField.value.trim() // Получаем значение из поля ввода
+		const userInput = this.inputField.value.trim()
 		if (userInput) {
 			console.log(userInput)
 			this.checkAnswer(userInput)
@@ -76,31 +76,30 @@ export class Game extends Scene {
 		this.load.image('mountains', 'assets/background/mountains.png')
 		this.load.image('trees', 'assets/background/trees.png')
 		this.load.image('ground', 'assets/groundd.png')
-		this.load.spritesheet('heroRun', 'assets/Run.png', {
+		this.load.spritesheet('heroRun', 'assets/firstHero/Run.png', {
 			frameWidth: 128,
 			frameHeight: 126,
 		})
-		this.load.spritesheet('heroIdle', 'assets/Idle.png', {
+		this.load.spritesheet('heroIdle', 'assets/firstHero/Idle.png', {
 			frameWidth: 128,
 			frameHeight: 128,
 		})
-		this.load.spritesheet('heroJump', 'assets/Jump.png', {
+		this.load.spritesheet('heroJump', 'assets/firstHero/Jump.png', {
 			frameWidth: 128,
 			frameHeight: 128,
 		})
-		this.load.spritesheet('heroAttack1', 'assets/Attack_1.png', {
+		this.load.spritesheet('heroAttack1', 'assets/firstHero/Attack_1.png', {
 			frameWidth: 128,
 			frameHeight: 128,
 		})
-		this.load.spritesheet('heroAttack2', 'assets/Attack_2.png', {
+		this.load.spritesheet('heroAttack2', 'assets/firstHero/Attack_2.png', {
 			frameWidth: 128,
 			frameHeight: 128,
 		})
-		this.load.spritesheet('heroAttack3', 'assets/Attack_3.png', {
+		this.load.spritesheet('heroAttack3', 'assets/firstHero/Attack_3.png', {
 			frameWidth: 128,
 			frameHeight: 128,
 		})
-		this.load.image('dragon', 'assets/dragon.png')
 	}
 
 	create() {

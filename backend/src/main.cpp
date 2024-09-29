@@ -205,7 +205,7 @@ int main() {
           res.set_content(questionJson.dump(), "application/json");
       } else {
           res.status = 400;
-          res.set_content("{\"error\": \"Missing difficulty parameter\"}", "application/json");
+          res.set_content("{\"error\": \"No diff\"}", "application/json");
       }
   });
 
@@ -219,7 +219,7 @@ int main() {
       res.set_content(answerResponse.dump(), "application/json");
   } else {
       res.status = 400;
-      res.set_content("{\"error\": \"Missing answer parameter\"}", "application/json");
+      res.set_content("{\"error\": \"No param\"}", "application/json");
   }
   });
 
