@@ -4,8 +4,8 @@
 #include <chrono>
 #include <vector>
 #include <algorithm>
-#include "json.h"
-#include "cpphttplib.h"
+#include "nlohmann/json.hpp"
+#include "httplib.h"
 
 using json = nlohmann::json;
 

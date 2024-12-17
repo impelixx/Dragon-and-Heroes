@@ -31,3 +31,8 @@ cmake_install.cmake
 vendor/
 backend/src/json.h
 backend/src/cpphttplib.h
+backend/.ninja_log
+backend/.ninja_deps
+backend/build.ninja
+backend/src/json.h
+backend/src/backend/src/cpp-httplib
