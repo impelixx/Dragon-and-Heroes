@@ -1,0 +1,13 @@
+[submodule "json"]
+  path = backend/src
+  url =https://github.com/nlohmann/json.git
+
+[submodule "cpp-httplib"]
+  path = backend/src
+  url =https://github.com/yhirose/cpp-httplib.git
+[submodule "backend/src/cpp-httplib"]
+	path = backend/src/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib.git
+[submodule "backend/src/backend/src/cpp-httplib"]
+	path = backend/src/backend/src/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib.git
