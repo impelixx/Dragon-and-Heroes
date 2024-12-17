@@ -29,3 +29,5 @@ cmake_install.cmake
 
 # Ignore dependency directories
 vendor/
+backend/src/json.h
+backend/src/cpphttplib.h
